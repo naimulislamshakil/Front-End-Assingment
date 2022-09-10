@@ -1,54 +1,69 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
 	const [check, setCheck] = useState(false);
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [rePassword, setRePassword] = useState('');
+
+	// create a user
+	const register = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const user = { name, email, password, rePassword };
+		console.log(user);
+	};
 	return (
 		<div className="row">
 			<div className="col">
-				<form className="w-75 mx-auto mt-5">
+				<form onSubmit={register} className="w-75 mx-auto mt-5">
 					<div className="form-outline mb-4">
-						<input
-							type="text"
-							id="form3Example1cg"
-							className="form-control form-control-lg"
-						/>
 						<label className="form-label" htmlFor="form3Example1cg">
 							Your Name
 						</label>
+						<input
+							type="text"
+							id="form3Example1cg"
+							onBlur={(e) => setName(e.target.value)}
+							className="form-control form-control-lg"
+						/>
 					</div>
 
 					<div className="form-outline mb-4">
-						<input
-							type="email"
-							id="form3Example3cg"
-							className="form-control form-control-lg"
-						/>
 						<label className="form-label" htmlFor="form3Example3cg">
 							Your Email
 						</label>
+						<input
+							type="email"
+							id="form3Example3cg"
+							onBlur={(e) => setEmail(e.target.value)}
+							className="form-control form-control-lg"
+						/>
 					</div>
 
 					<div className="form-outline mb-4">
-						<input
-							type="password"
-							id="form3Example4cg"
-							className="form-control form-control-lg"
-						/>
 						<label className="form-label" htmlFor="form3Example4cg">
 							Password
 						</label>
+						<input
+							type="password"
+							id="form3Example4cg"
+							onBlur={(e) => setPassword(e.target.value)}
+							className="form-control form-control-lg"
+						/>
 					</div>
 
 					<div className="form-outline mb-4">
-						<input
-							type="password"
-							id="form3Example4cdg"
-							className="form-control form-control-lg"
-						/>
 						<label className="form-label" htmlFor="form3Example4cdg">
 							Repeat your password
 						</label>
+						<input
+							type="password"
+							id="form3Example4cdg"
+							onBlur={(e) => setRePassword(e.target.value)}
+							className="form-control form-control-lg"
+						/>
 					</div>
 
 					<div className="form-check d-flex justify-content-center mb-5">
