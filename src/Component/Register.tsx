@@ -1,7 +1,16 @@
 import React, { FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loading from './Loading';
+import { useAppDispatch, useAppSelector } from './Redux/Hooks';
+import { registerUser } from './Redux/Slice/Register';
 
 const Register = () => {
+	const dispatch = useAppDispatch();
+	const { message, isLoading, error } = useAppSelector(
+		(state) => state.register
+	);
+
 	const [check, setCheck] = useState(false);
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
@@ -11,9 +20,26 @@ const Register = () => {
 	// create a user
 	const register = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const user = { name, email, password, rePassword };
-		console.log(user);
+		const user = { name, email, password };
+		if (password === rePassword) {
+			// console.log(user);
+			dispatch(registerUser({ user }));
+		} else {
+			toast.error("Password dosen't match.");
+		}
 	};
+
+	if (isLoading) {
+		return <Loading />;
+	}
+
+	if (error) {
+		toast.error(error);
+	}
+
+	if (message) {
+		toast.success(message?.message);
+	}
 	return (
 		<div className="row">
 			<div className="col">
