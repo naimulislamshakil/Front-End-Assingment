@@ -13,3 +13,8 @@ export interface PerUser {
 	email: string;
 	password: string;
 }
+
+export interface LoginPerUser {
+	email: string;
+	password: string;
+}

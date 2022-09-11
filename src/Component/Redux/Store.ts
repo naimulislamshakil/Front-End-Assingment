@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
+import createLoginSlice from './Slice/LoginSlice';
 import createUserSlice from './Slice/Register';
 // ...
 
 export const store = configureStore({
 	reducer: {
 		register: createUserSlice,
+		login: createLoginSlice,
 	},
 });
 
