@@ -1,36 +1,30 @@
 import React, { FormEvent, useState } from 'react';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import auth from '../firebase.config';
 import Loading from './Loading';
-import { useAppDispatch, useAppSelector } from './Redux/Hooks';
-import { loginUser } from './Redux/Slice/LoginSlice';
 
-const Login = () => {
-	const dispatch = useAppDispatch();
-	const { message, isLoading, error } = useAppSelector(
-		(state) => state.register
-	);
+const Login = () =>
+{
+	// login user
+	const [signInWithEmailAndPassword, user, loading] =
+		useSignInWithEmailAndPassword(auth);
+	
+	// usefull state
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const login = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const user = {
-			email,
-			password,
-		};
-
-		dispatch(loginUser({ user }));
+		
 	};
-	if (isLoading) {
+	if (loading) {
 		return <Loading />;
 	}
 
-	if (error) {
-		toast.error(error);
-	}
 
-	if (message) {
+	if () {
 		toast.success(message?.message);
 	}
 

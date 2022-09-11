@@ -1,45 +1,42 @@
 import React, { FormEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import auth from '../firebase.config';
 import Loading from './Loading';
-import { useAppDispatch, useAppSelector } from './Redux/Hooks';
-import { registerUser } from './Redux/Slice/Register';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 const Register = () => {
-	const dispatch = useAppDispatch();
-	const { message, isLoading, error } = useAppSelector(
-		(state) => state.register
-	);
+	// create user
+	const [createUserWithEmailAndPassword, user, loading] =
+		useCreateUserWithEmailAndPassword(auth);
 
+	// navigator
+	const navigate = useNavigate();
+
+	// usefull state
 	const [check, setCheck] = useState(false);
-	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [rePassword, setRePassword] = useState('');
 
 	// create a user
-	const register = (e: FormEvent<HTMLFormElement>) => {
+	const register = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const user = { name, email, password };
+
 		if (password === rePassword) {
-			// console.log(user);
-			dispatch(registerUser({ user }));
+			await createUserWithEmailAndPassword(email, password);
 		} else {
 			toast.error("Password dosen't match.");
 		}
 	};
 
-	if (isLoading) {
+	if (loading) {
 		return <Loading />;
 	}
-
-	if (error) {
-		toast.error(error);
+	if (user) {
+		navigate('/');
 	}
 
-	if (message) {
-		toast.success(message?.message);
-	}
 	return (
 		<div className="row">
 			<div className="col">
@@ -51,7 +48,6 @@ const Register = () => {
 						<input
 							type="text"
 							id="form3Example1cg"
-							onBlur={(e) => setName(e.target.value)}
 							className="form-control form-control-lg"
 						/>
 					</div>
