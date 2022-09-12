@@ -1,31 +1,34 @@
 import React, { FormEvent, useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import auth from '../firebase.config';
 import Loading from './Loading';
 
-const Login = () =>
-{
+const Login = () => {
 	// login user
-	const [signInWithEmailAndPassword, user, loading] =
+	const [signInWithEmailAndPassword, user, loading, error] =
 		useSignInWithEmailAndPassword(auth);
-	
+	// const [user, loading2] = useAuthState(auth);
+	const navigate = useNavigate();
+
 	// usefull state
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const login = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		
+		signInWithEmailAndPassword(email, password);
 	};
 	if (loading) {
 		return <Loading />;
 	}
+	if (error) {
+		toast.error(error.message);
+	}
 
-
-	if () {
-		toast.success(message?.message);
+	if (user) {
+		navigate('/');
 	}
 
 	return (
@@ -38,7 +41,7 @@ const Login = () =>
 							Email address
 						</label>
 						<input
-							onBlur={(e) => setEmail(e.target.value)}
+							onChange={(e) => setEmail(e.target.value)}
 							type="email"
 							id="form2Example1"
 							className="form-control"
@@ -51,7 +54,7 @@ const Login = () =>
 							Password
 						</label>
 						<input
-							onBlur={(e) => setPassword(e.target.value)}
+							onChange={(e) => setPassword(e.target.value)}
 							type="password"
 							id="form2Example2"
 							className="form-control"

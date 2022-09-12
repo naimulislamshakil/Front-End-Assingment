@@ -7,8 +7,9 @@ import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 
 const Register = () => {
 	// create user
-	const [createUserWithEmailAndPassword, user, loading] =
+	const [createUserWithEmailAndPassword, user, loading, error] =
 		useCreateUserWithEmailAndPassword(auth);
+	// const [user, loading2] = useAuthState(auth);
 
 	// navigator
 	const navigate = useNavigate();
@@ -20,11 +21,11 @@ const Register = () => {
 	const [rePassword, setRePassword] = useState('');
 
 	// create a user
-	const register = async (e: FormEvent<HTMLFormElement>) => {
+	const register = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		if (password === rePassword) {
-			await createUserWithEmailAndPassword(email, password);
+			createUserWithEmailAndPassword(email, password);
 		} else {
 			toast.error("Password dosen't match.");
 		}
@@ -33,9 +34,13 @@ const Register = () => {
 	if (loading) {
 		return <Loading />;
 	}
+	if (error) {
+		toast.error(error?.message);
+	}
 	if (user) {
 		navigate('/');
 	}
+	console.log(user);
 
 	return (
 		<div className="row">
@@ -59,7 +64,7 @@ const Register = () => {
 						<input
 							type="email"
 							id="form3Example3cg"
-							onBlur={(e) => setEmail(e.target.value)}
+							onChange={(e) => setEmail(e.target.value)}
 							className="form-control form-control-lg"
 						/>
 					</div>
@@ -71,7 +76,7 @@ const Register = () => {
 						<input
 							type="password"
 							id="form3Example4cg"
-							onBlur={(e) => setPassword(e.target.value)}
+							onChange={(e) => setPassword(e.target.value)}
 							className="form-control form-control-lg"
 						/>
 					</div>
@@ -83,7 +88,7 @@ const Register = () => {
 						<input
 							type="password"
 							id="form3Example4cdg"
-							onBlur={(e) => setRePassword(e.target.value)}
+							onChange={(e) => setRePassword(e.target.value)}
 							className="form-control form-control-lg"
 						/>
 					</div>
