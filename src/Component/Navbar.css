@@ -1,0 +1,12 @@
+a > span,
+span,
+ul > li > a {
+	color: gray;
+	cursor: pointer;
+}
+
+a > span:hover,
+span:hover,
+ul > li > a:hover {
+	color: white;
+}
