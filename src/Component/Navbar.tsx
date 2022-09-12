@@ -17,6 +17,7 @@ const Navbar = () => {
 
 	const [token, setToken] = useState('');
 	const [user, setUser] = useState<User>({});
+	const [results, setResults] = useState<any>({});
 	useEffect(() => {
 		const token: any = window.localStorage.getItem('token');
 		if (token) {
@@ -31,6 +32,13 @@ const Navbar = () => {
 		setToken('');
 		window.localStorage.removeItem('token');
 	};
+
+	const search = async (text: string) => {
+		spotify.searchTracks(text).then((scarch) => setResults(scarch));
+	};
+
+	console.log(results.tracks?.items);
+
 	const navbar = (
 		<>
 			<li>
@@ -53,21 +61,6 @@ const Navbar = () => {
 						/>
 					</svg>
 					<span className="ms-1 d-sm-inline"> Home</span>{' '}
-				</Link>
-			</li>
-			<li>
-				<Link to="/" className="d-flex nav-link text-white px-0 align-middle">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						width="25"
-						height="25"
-						fill="currentColor"
-						className="bi bi-search me-2 text-success"
-						viewBox="0 0 16 16"
-					>
-						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-					</svg>
-					<span className="ms-1 d-sm-inline"> Search</span>{' '}
 				</Link>
 			</li>
 			<li>
@@ -176,8 +169,19 @@ const Navbar = () => {
 					</div>
 				</div>
 				<div className="col py-3 content-bg">
+					<div className="input-group mb-3 w-50">
+						<input
+							onChange={(e) => search(e.target.value)}
+							type="text"
+							className="form-control"
+							placeholder="Search By Name......"
+						></input>
+					</div>
 					<Routes>
-						<Route path="/" element={<Home />}></Route>
+						<Route
+							path="/"
+							element={<Home result={results.tracks?.items} />}
+						></Route>
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/playlists" element={<Playlists />} />
