@@ -1,14 +1,36 @@
-import { signOut } from 'firebase/auth';
 import { Link, Route, Routes } from 'react-router-dom';
-import auth from '../firebase.config';
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import './Navbar.css';
 import Playlists from './Playlists';
 import Favourites from './Favourites';
+import { useEffect, useState } from 'react';
+import spotifyWebApi from 'spotify-web-api-js';
+
+const spotify = new spotifyWebApi();
 
 const Navbar = () => {
+	type User = {
+		display_name?: string;
+	};
+
+	const [token, setToken] = useState('');
+	const [user, setUser] = useState<User>({});
+	useEffect(() => {
+		const token: any = window.localStorage.getItem('token');
+		if (token) {
+			setToken(token);
+			spotify.setAccessToken(token);
+			spotify.getMe().then((data) => setUser(data));
+		}
+	}, []);
+	const { display_name } = user;
+
+	const logout = () => {
+		setToken('');
+		window.localStorage.removeItem('token');
+	};
 	const navbar = (
 		<>
 			<li>
@@ -88,9 +110,6 @@ const Navbar = () => {
 		</>
 	);
 
-	const logout = () => {
-		signOut(auth);
-	};
 	return (
 		<div>
 			<div className="row flex-nowrap">
@@ -105,7 +124,7 @@ const Navbar = () => {
 							{navbar}
 						</ul>
 
-						{user ? (
+						{token ? (
 							<div className="dropdown pb-4">
 								<Link
 									to="/"
@@ -121,7 +140,9 @@ const Navbar = () => {
 										height="30"
 										className="rounded-circle"
 									/>
-									<span className="d-none d-sm-inline mx-1">{user?.email}</span>
+									<span className="d-none d-sm-inline mx-1">
+										{display_name}
+									</span>
 								</Link>
 
 								<ul className="dropdown-menu dropdown-menu-dark text-small shadow">
