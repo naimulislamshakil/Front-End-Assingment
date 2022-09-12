@@ -141,29 +141,11 @@ const Navbar = () => {
 										className="rounded-circle"
 									/>
 									<span className="d-none d-sm-inline mx-1">
-										{display_name}
+										{display_name?.slice(0, 10)}
 									</span>
 								</Link>
 
 								<ul className="dropdown-menu dropdown-menu-dark text-small shadow">
-									<li>
-										<Link to="/" className="dropdown-item ">
-											New project...
-										</Link>
-									</li>
-									<li>
-										<Link to="/" className="dropdown-item ">
-											Settings
-										</Link>
-									</li>
-									<li>
-										<Link to="/" className="dropdown-item ">
-											Profile
-										</Link>
-									</li>
-									<li>
-										<hr className="dropdown-divider" />
-									</li>
 									<li>
 										<button onClick={logout} className="link dropdown-item ">
 											Sign out

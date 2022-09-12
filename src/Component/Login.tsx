@@ -7,7 +7,7 @@ const Login = () => {
 	const RESPONSE_TYPE = 'token';
 
 	return (
-		<div className="row">
+		<div className="row ">
 			<div className="col div-center">
 				<a
 					href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
