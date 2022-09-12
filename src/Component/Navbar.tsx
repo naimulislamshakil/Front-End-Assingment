@@ -1,26 +1,27 @@
+import { signOut } from 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, Route, Routes } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import auth from '../firebase.config';
 import Home from './Home';
+import Loading from './Loading';
 import Login from './Login';
 import Register from './Register';
 
 const Navbar = () => {
-	const navbar = (
-		<>
-			<li>
-				<Link to="/login" className="nav-link text-white px-0 align-middle">
-					<span className="ms-1 d-sm-inline">Login</span>{' '}
-				</Link>
-			</li>
-			<li>
-				<Link
-					to="/register"
-					className="nav-link text-white px-0 mb-sm-2 align-middle"
-				>
-					<span className="ms-1 d-sm-inline">Register</span>{' '}
-				</Link>
-			</li>
-		</>
-	);
+	const [user, loading, error] = useAuthState(auth);
+
+	if (loading) {
+		return <Loading />;
+	}
+	if (error) {
+		toast.error(error?.message);
+	}
+	const navbar = <></>;
+
+	const logout = () => {
+		signOut(auth);
+	};
 	return (
 		<div>
 			<div className="row flex-nowrap">
@@ -39,49 +40,71 @@ const Navbar = () => {
 							{navbar}
 						</ul>
 
-						<div className="dropdown pb-4">
-							<Link
-								to="/"
-								className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-								id="dropdownUser1"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								<img
-									src="https://github.com/mdo.png"
-									alt="hugenerd"
-									width="30"
-									height="30"
-									className="rounded-circle"
-								/>
-								<span className="d-none d-sm-inline mx-1">loser</span>
-							</Link>
-							<ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+						{user ? (
+							<div className="dropdown pb-4">
+								<Link
+									to="/"
+									className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+									id="dropdownUser1"
+									data-bs-toggle="dropdown"
+									aria-expanded="false"
+								>
+									<img
+										src="https://github.com/mdo.png"
+										alt="hugenerd"
+										width="30"
+										height="30"
+										className="rounded-circle"
+									/>
+									<span className="d-none d-sm-inline mx-1">{user?.email}</span>
+								</Link>
+
+								<ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+									<li>
+										<Link to="/" className="dropdown-item">
+											New project...
+										</Link>
+									</li>
+									<li>
+										<Link to="/" className="dropdown-item">
+											Settings
+										</Link>
+									</li>
+									<li>
+										<Link to="/" className="dropdown-item">
+											Profile
+										</Link>
+									</li>
+									<li>
+										<hr className="dropdown-divider" />
+									</li>
+									<li>
+										<button onClick={logout} className="link dropdown-item">
+											Sign out
+										</button>
+									</li>
+								</ul>
+							</div>
+						) : (
+							<ul className="nav nav-pills flex-column">
 								<li>
-									<Link to="/" className="dropdown-item">
-										New project...
+									<Link
+										to="/login"
+										className="nav-link text-white px-0 align-middle"
+									>
+										<span className="ms-1 d-sm-inline">Login</span>{' '}
 									</Link>
 								</li>
 								<li>
-									<Link to="/" className="dropdown-item">
-										Settings
-									</Link>
-								</li>
-								<li>
-									<Link to="/" className="dropdown-item">
-										Profile
-									</Link>
-								</li>
-								<li>
-									<hr className="dropdown-divider" />
-								</li>
-								<li>
-									<Link to="/" className="dropdown-item">
-										Sign out
+									<Link
+										to="/register"
+										className="nav-link text-white px-0 mb-sm-2 align-middle"
+									>
+										<span className="ms-1 d-sm-inline">Register</span>{' '}
 									</Link>
 								</li>
 							</ul>
-						</div>
+						)}
 					</div>
 				</div>
 				<div className="col py-3">
