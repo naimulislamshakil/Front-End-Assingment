@@ -1,4 +1,7 @@
 import React from 'react';
+import HomeCard from './HomeCard';
+import './Navbar.css';
+
 interface Type {
 	album: {
 		album_type: string;
@@ -34,14 +37,19 @@ interface Type {
 }
 
 interface Result {
-	result: Type[];
+	results: Type[];
 }
 
-const Home = ({ result }: Result) => {
-	console.log(result);
+const Home = ({ results }: Result) => {
 	return (
 		<div>
-			<h2>This is Home page!!!!!</h2>
+			{results ? (
+				results.map((result, index) => (
+					<HomeCard key={index} result={result}></HomeCard>
+				))
+			) : (
+				<h4 className="text">First Search in the search Bar.....</h4>
+			)}
 		</div>
 	);
 };

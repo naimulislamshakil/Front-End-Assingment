@@ -28,7 +28,8 @@ ul > li > a > img {
 	color: white !important;
 }
 
-.div-center {
+.div-center,
+.text {
 	display: flex;
 	height: 100vh;
 	justify-content: center;

@@ -23,7 +23,7 @@ const Navbar = () => {
 		if (token) {
 			setToken(token);
 			spotify.setAccessToken(token);
-			spotify.getMe().then((data) => setUser(data));
+			spotify.getMe().then((data: any) => setUser(data));
 		}
 	}, []);
 	const { display_name } = user;
@@ -34,10 +34,10 @@ const Navbar = () => {
 	};
 
 	const search = async (text: string) => {
-		spotify.searchTracks(text).then((scarch) => setResults(scarch));
+		spotify.searchTracks(text).then((scarch: any) => setResults(scarch));
 	};
 
-	console.log(results.tracks?.items);
+	// console.log(results.tracks?.items);
 
 	const navbar = (
 		<>
@@ -180,7 +180,7 @@ const Navbar = () => {
 					<Routes>
 						<Route
 							path="/"
-							element={<Home result={results.tracks?.items} />}
+							element={<Home results={results.tracks?.items} />}
 						></Route>
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
