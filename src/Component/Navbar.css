@@ -35,3 +35,6 @@ ul > li > a > img {
 	justify-content: center;
 	align-items: center;
 }
+.img-green {
+	color: green;
+}

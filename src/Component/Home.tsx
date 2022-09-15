@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import HomeCard from './HomeCard';
 import './Navbar.css';
+import Player from './Player';
 
 interface Type {
 	album: {
@@ -41,15 +42,28 @@ interface Result {
 }
 
 const Home = ({ results }: Result) => {
+	const [url, setUrl] = useState('');
+	// const [palyingTrack, setpalyingTrack] = useState();
+	const token = localStorage.getItem('token');
+
+	// const chooseSongs = (song: any) => {
+	// 	setpalyingTrack(song);
+	// };
+
 	return (
 		<div>
-			{results ? (
-				results.map((result, index) => (
-					<HomeCard key={index} result={result}></HomeCard>
-				))
-			) : (
-				<h4 className="text">First Search in the search Bar.....</h4>
-			)}
+			<div>
+				{results ? (
+					results.map((result, index) => (
+						<HomeCard key={index} result={result} setUrl={setUrl}></HomeCard>
+					))
+				) : (
+					<h4 className="text">First Search in the search Bar.....</h4>
+				)}
+			</div>
+			<div>
+				<Player url={url} token={token} />
+			</div>
 		</div>
 	);
 };
